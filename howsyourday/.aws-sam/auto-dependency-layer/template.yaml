@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'howsyourday
+
+  Sample SAM Template for howsyourday
+
+  '
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 128
+Resources:
+  HowsyourdayFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HowsyourdayFunction
+      Handler: main.handler
+      Runtime: go1.x
+      Tracing: Active
+      Description: Tell us how was your day!
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET
+Outputs:
+  HowsyourdayAPI:
+    Description: API Gateway endpoint URL for Prod environment for First Function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HowsyourdayFunction:
+    Description: First Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HowsyourdayFunction
+      - Arn
+  HowsyourdayFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HowsyourdayFunctionRole
+      - Arn
